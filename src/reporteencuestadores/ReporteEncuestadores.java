@@ -37,9 +37,9 @@ public class ReporteEncuestadores {
             Connection conn = DriverManager.getConnection(myUrl, "root", "root");
             Statement st = (Statement) conn.createStatement();
             ResultSet rs = (ResultSet) st.executeQuery(consulta);
-            String nombreEncAnterior="";
-            int indice=0;
-            Encuestador encues=null;
+            String nombreEncAnterior = "";
+            int indice = 0;
+            Encuestador encues = null;
             while (rs.next()) {
                 double longitud = 0;
                 double latitud = 0;
@@ -47,6 +47,8 @@ public class ReporteEncuestadores {
                     longitud = Double.parseDouble(rs.getString("LONGITUD"));
                     latitud = Double.parseDouble(rs.getString("LATITUD"));
                 } catch (Exception e) {
+                    longitud = 0;
+                    latitud = 0;
                     System.err.println(e.getMessage());
                 }
                 String idEncuesta = rs.getString("ENCUESTA_ID");
@@ -55,21 +57,23 @@ public class ReporteEncuestadores {
                 String nomMun = rs.getString("NOM_MUN");
                 String nomLoc = rs.getString("NOM_LOC");
                 String cveLoc = rs.getString("CVE_LOC");
-                
-                if(!nomEnc.equals(nombreEncAnterior)){
+
+                if (!nomEnc.equals(nombreEncAnterior)) {
+                    System.out.println("Nuevo encuestador");
                     nombreEncAnterior = nomEnc;
-                    encues = new Encuestador(nomEnc,indice);
+                    encues = new Encuestador(nomEnc, indice);
                     encuestadores.add(encues);
                     indice++;
-                }else{
+                } else {
+                    System.out.println("Encustador conocido:" + encues.toString());
                     encues.nuevaCoordenada(longitud, latitud);
-                }   
-            //System.out.format("%f, %f, %s, %s, %s, %s, %s, %s\n", longitud, latitud, idEncuesta, nomEnc, nomEnt, nomMun,nomLoc,cveLoc);
+                    System.out.println("Coordenada almcenada");
+                }
+                System.out.format("%f, %f, %s, %s, %s, %s, %s, %s\n", longitud, latitud, idEncuesta, nomEnc, nomEnt, nomMun, nomLoc, cveLoc);
             }
             st.close();
         } catch (Exception e) {
-            System.err.println("Got an exception! ");
-            System.err.println(e.getMessage());
+            System.err.println("Error: " + e.getMessage() + " " + e.toString());
         }
 
     }

@@ -20,14 +20,12 @@ public class TestReporte {
         boolean valor = true;
         try {
             ReporteEncuestadores reporte = new ReporteEncuestadores();
-            if (reporte.cargarCSV()) {
-                System.out.println("CSV cargado");
-//                reporte.cargarTuplas(1);
-//                reporte.imprimirTabla();
-                reporte.generarConsultaTable();
-            }
-        } catch (IOException ex) {
-            System.out.println("Ocurrió un error: " + ex.getMessage());
+//            if (reporte.cargarCSV()) {
+//                System.out.println("CSV cargado");
+////                reporte.cargarTuplas(1);
+////                reporte.imprimirTabla();
+//                reporte.generarConsultaTable();
+//            }
         } catch(Exception e){
             System.out.println("Ocurrió un error: " + e.toString());
         }

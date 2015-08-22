@@ -21,10 +21,16 @@ public class Encuestador {
     Encuestador(String nombre, int indice) {
         this.nombre = nombre;
         this.indice = indice;
+        coordenadas = new ArrayList<>();
     }
 
     public void nuevaCoordenada(double longitud, double latitud) {
         coordenadas.add(new Coordenada(longitud, latitud));
     }
 
+    @Override
+    public String toString(){
+        return nombre;
+    }
+    
 }
