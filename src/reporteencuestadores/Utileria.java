@@ -48,13 +48,10 @@ public class Utileria {
             FileReader csv = new FileReader(ruta);
             this.csv = csv;
             return true;
-        } catch (FileNotFoundException ex) {
-            System.out.println("Error al cargar archivo " + ex.getMessage());
-            return false;
-        } catch (IOException ex) {
+        }catch (IOException ex) {
             System.out.println("Error en flujo " + ex.getMessage());
             return false;
-        }
+        } 
     }
 
     // Almacena un numero de tuplas dado en tabla.

@@ -1,36 +1,51 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package reporteencuestadores;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  *
- * @author El
+ * @author Isaac
  */
 public class Encuestador {
 
-    ArrayList<Coordenada> coordenadas;
-    String nombre;
-    int indice;
+    private int indice;
+    private String nombre;
+    private Set entidadesF;
+    private ArrayList<Coordenada> listaCoordenadas;
+    private int numLocalizRepetidas;
 
     Encuestador(String nombre, int indice) {
         this.nombre = nombre;
         this.indice = indice;
-        coordenadas = new ArrayList<>();
+        listaCoordenadas = new ArrayList<>();
+        numLocalizRepetidas = 0;
     }
 
     public void nuevaCoordenada(double longitud, double latitud) {
-        coordenadas.add(new Coordenada(longitud, latitud));
+        Coordenada nCoor = new Coordenada(longitud, latitud);
+        if(listaCoordenadas.contains(nCoor)){
+            incLocalizRepetidas();
+            System.out.println("Coordenada repetida para: " + this.toString());
+        }else{
+            listaCoordenadas.add(nCoor);
+            System.out.println("Nueva coordenada para: " + this.toString());
+        }
+        
+    }
+
+    public void nuevaEntidad(String entidad) {
+        
+    }
+
+    public void incLocalizRepetidas() {
+        numLocalizRepetidas++;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return nombre;
     }
-    
+
 }
