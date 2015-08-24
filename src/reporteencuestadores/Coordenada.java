@@ -15,10 +15,12 @@ public class Coordenada {
 
     double latitud;
     double longitud;
+    double rangoTolerancia;
 
     public Coordenada(double longitud, double latitud) {
         this.longitud = longitud;
         this.latitud = latitud;
+        this.rangoTolerancia = 0.0001;
     }
 
     public double getLatitud() {
@@ -31,13 +33,12 @@ public class Coordenada {
 
     @Override
     public boolean equals(Object objeto) {
-        System.out.println("Entra equals");
         if (objeto == null) {
             return false;
         } else if (objeto instanceof Coordenada) {
             Coordenada coordenada = (Coordenada) objeto;
-            if (abs(this.latitud) - abs(coordenada.latitud) < 1 && abs(this.longitud) - abs(coordenada.longitud) < 1) {
-                System.out.println("NLat " + (abs(this.latitud) - abs(coordenada.latitud)) + " Nlon" + (abs(this.longitud) - abs(coordenada.longitud)));
+            if (((abs(this.latitud) - abs(coordenada.latitud)) < rangoTolerancia)  && ((abs(this.longitud) - abs(coordenada.longitud)) < rangoTolerancia)) {
+                //System.out.println("NLat " + (abs(this.latitud) - abs(coordenada.latitud)) + " Nlon" + (abs(this.longitud) - abs(coordenada.longitud)));
                 return true;
             } else {
                 return false;

@@ -1,6 +1,10 @@
 package reporteencuestadores;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -25,6 +29,9 @@ public class ReporteEncuestadores {
 
     // Ejecuta una consulta sql en la base de datos
     public void ejecutarConsulta(String consulta) {
+        System.out.println("Ejecutando consulta: ");
+        System.out.println(consulta);
+        System.out.println("Espere por favor...");
         try {
             String myUrl = "jdbc:mysql://localhost:3307/registros_eria";
             Connection conn = DriverManager.getConnection(myUrl, "root", "root");
@@ -33,6 +40,7 @@ public class ReporteEncuestadores {
             String nombreEncAnterior = "";
             int indice = 0;
             Encuestador encues = null;
+            System.out.println("Analizando datos...");
             while (rs.next()) {
                 double longitud = 0;
                 double latitud = 0;
@@ -42,7 +50,6 @@ public class ReporteEncuestadores {
                 } catch (Exception e) {
                     longitud = 0;
                     latitud = 0;
-                    System.err.println(e.getMessage());
                 }
                 String idEncuesta = rs.getString("ENCUESTA_ID");
                 String nomEnc = rs.getString("NOM_ENC");
@@ -52,23 +59,41 @@ public class ReporteEncuestadores {
                 String cveLoc = rs.getString("CVE_LOC");
 
                 if (!nomEnc.equals(nombreEncAnterior)) {
-                    System.out.println("Nuevo encuestador");
+                    //System.out.println("Nuevo encuestador");
                     nombreEncAnterior = nomEnc;
                     encues = new Encuestador(nomEnc, indice);
                     encuestadores.add(encues);
                     indice++;
                 } else {
-                    System.out.println("Encustador conocido:" + encues.toString());
-                    encues.nuevaCoordenada(longitud, latitud);
-                    System.out.println("Coordenada almcenada");
+                    encues.updtNEncustas();
+                    //System.out.println("Encustador conocido:" + encues.toString());
+                    if (longitud != 0 && latitud != 0) {
+                        encues.nuevaCoordenada(longitud, latitud);
+                    }
+                    //System.out.println("Coordenada almcenada");
                 }
-                System.out.format("%f, %f, %s, %s, %s, %s, %s, %s\n", longitud, latitud, idEncuesta, nomEnc, nomEnt, nomMun, nomLoc, cveLoc);
+                //System.out.format("%f, %f, %s, %s, %s, %s, %s, %s\n", longitud, latitud, idEncuesta, nomEnc, nomEnt, nomMun, nomLoc, cveLoc);
             }
+
+            System.out.println("\n\n\n");
+            System.out.println("Generando Reporte...");
+            imprimirReporte("CHIAPAS4");
             st.close();
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage() + " " + e.toString());
         }
+    }
 
+    private void imprimirReporte(String nombreReporte) throws FileNotFoundException, UnsupportedEncodingException {
+        PrintWriter reporte = new PrintWriter(nombreReporte + ".csv", "UTF-8");
+        System.out.println("-----------------------------------------------");
+        System.out.println("|ENCUESTADOR \t\t | |Coordenadas repetidas: |");
+        reporte.println("ENCUESTADOR, TotalEncuestas, EncuestasCoordenadasRepetidas");
+        for (Encuestador encuestdor : encuestadores) {
+            //System.out.println(encuestdor + " , " + encuestdor.getLocalizRepetidas());
+            reporte.println(encuestdor+ " , " + encuestdor.getTotalEncuestas()+ " , " + encuestdor.getLocalizRepetidas());
+        }
+        reporte.close();
     }
 
 }//class

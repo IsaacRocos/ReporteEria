@@ -13,15 +13,13 @@ public class Principal {
     public static void main(String[] args) {
         ReporteEncuestadores re = new ReporteEncuestadores();
         re.ejecutarConsulta("SELECT "
-                    + "         A.LONGITUD ,\n"
-                    + "		A.LATITUD, \n"
-                    + "		A.ENCUESTA_ID , \n"
-                    + "        A.NOM_ENC, \n"
-                    + "        A.NOM_ENT, \n"
-                    + "        A.NOM_MUN, \n"
-                    + "        A.NOM_LOC, \n"
-                    + "        A.CVE_LOC FROM registros_eria.registros as A where A.NOM_ENT = \"CHIAPAS\" ORDER BY NOM_ENC, ENCUESTA_ID");
-        
-        
+                    + " A.LONGITUD ,"
+                    + "	A.LATITUD,"
+                    + "	A.ENCUESTA_ID, "
+                    + " A.NOM_ENC, "
+                    + " A.NOM_ENT, "
+                    + " A.NOM_MUN, "
+                    + " A.NOM_LOC, "
+                    + " A.CVE_LOC FROM registros_eria.registros as A where A.NOM_ENT = \"CHIAPAS\" ORDER BY NOM_ENC, ENCUESTA_ID");
     }
 }
