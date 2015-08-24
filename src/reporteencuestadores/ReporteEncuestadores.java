@@ -40,6 +40,12 @@ public class ReporteEncuestadores {
             String nombreEncAnterior = "";
             int indice = 0;
             Encuestador encues = null;
+            String idEncuesta = "";
+            String nomEnc = "";
+            String nomEnt = "";
+            String nomMun = "";
+            String nomLoc = "";
+            String cveLoc = "";
             System.out.println("Analizando datos...");
             while (rs.next()) {
                 double longitud = 0;
@@ -51,12 +57,12 @@ public class ReporteEncuestadores {
                     longitud = 0;
                     latitud = 0;
                 }
-                String idEncuesta = rs.getString("ENCUESTA_ID");
-                String nomEnc = rs.getString("NOM_ENC");
-                String nomEnt = rs.getString("NOM_ENT");
-                String nomMun = rs.getString("NOM_MUN");
-                String nomLoc = rs.getString("NOM_LOC");
-                String cveLoc = rs.getString("CVE_LOC");
+                idEncuesta = rs.getString("ENCUESTA_ID");
+                nomEnc = rs.getString("NOM_ENC");
+                nomEnt = rs.getString("NOM_ENT");
+                nomMun = rs.getString("NOM_MUN");
+                nomLoc = rs.getString("NOM_LOC");
+                cveLoc = rs.getString("CVE_LOC");
 
                 if (!nomEnc.equals(nombreEncAnterior)) {
                     //System.out.println("Nuevo encuestador");
@@ -64,20 +70,19 @@ public class ReporteEncuestadores {
                     encues = new Encuestador(nomEnc, indice);
                     encuestadores.add(encues);
                     indice++;
+                }
+                encues.updtNEncustas();
+                if (longitud != 0 && latitud != 0) {
+                    encues.nuevaCoordenada(longitud, latitud);
                 } else {
-                    encues.updtNEncustas();
-                    //System.out.println("Encustador conocido:" + encues.toString());
-                    if (longitud != 0 && latitud != 0) {
-                        encues.nuevaCoordenada(longitud, latitud);
-                    }
-                    //System.out.println("Coordenada almcenada");
+                    encues.updtEncuestasNulas();
                 }
                 //System.out.format("%f, %f, %s, %s, %s, %s, %s, %s\n", longitud, latitud, idEncuesta, nomEnc, nomEnt, nomMun, nomLoc, cveLoc);
             }
 
             System.out.println("\n\n\n");
             System.out.println("Generando Reporte...");
-            imprimirReporte("CHIAPAS4");
+            imprimirReporte("REP_"+nomEnt);
             st.close();
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage() + " " + e.toString());
@@ -88,10 +93,10 @@ public class ReporteEncuestadores {
         PrintWriter reporte = new PrintWriter(nombreReporte + ".csv", "UTF-8");
         System.out.println("-----------------------------------------------");
         System.out.println("|ENCUESTADOR \t\t | |Coordenadas repetidas: |");
-        reporte.println("ENCUESTADOR, TotalEncuestas, EncuestasCoordenadasRepetidas");
+        reporte.println("ENCUESTADOR,TotalEncuestas,EncuestasCoordenadasRepetidas,EncuestasSinCoordenadas");
         for (Encuestador encuestdor : encuestadores) {
             //System.out.println(encuestdor + " , " + encuestdor.getLocalizRepetidas());
-            reporte.println(encuestdor+ " , " + encuestdor.getTotalEncuestas()+ " , " + encuestdor.getLocalizRepetidas());
+            reporte.println(encuestdor + "," + encuestdor.getTotalEncuestas() + "," + encuestdor.getLocalizRepetidas() + "," + encuestdor.getEncuestasNulas());
         }
         reporte.close();
     }

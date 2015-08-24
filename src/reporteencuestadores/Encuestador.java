@@ -16,13 +16,14 @@ public class Encuestador {
     private ArrayList<Coordenada> listaCoordenadas;
     private int numLocalizRepetidas;
     private int totalnEcuestas;
+    private int encuestasNulas;
 
     Encuestador(String nombre, int indice) {
         this.nombre = nombre;
         this.indice = indice;
         listaCoordenadas = new ArrayList<>();
         numLocalizRepetidas = 0;
-        this.totalnEcuestas = 1;
+        this.totalnEcuestas = 0;
     }
 
     public void nuevaCoordenada(double longitud, double latitud) {
@@ -61,5 +62,13 @@ public class Encuestador {
     public int getTotalEncuestas() {
         return this.totalnEcuestas;
     }
+    
+    public void updtEncuestasNulas(){
+        this.encuestasNulas ++;
+    }
 
+    public int getEncuestasNulas(){
+        return this.encuestasNulas;
+    }
+    
 }
