@@ -96,7 +96,7 @@ public class ReporteEncuestadores {
         reporte.println("ENCUESTADOR,TotalEncuestas,EncuestasCoordenadasRepetidas,EncuestasSinCoordenadas");
         for (Encuestador encuestdor : encuestadores) {
             //System.out.println(encuestdor + " , " + encuestdor.getLocalizRepetidas());
-            reporte.println(encuestdor + "|" + encuestdor.getTotalEncuestas() + "|" + encuestdor.getLocalizRepetidas() + "|" + encuestdor.getEncuestasNulas());
+            reporte.println(encuestdor + "," + encuestdor.getTotalEncuestas() + "," + encuestdor.getLocalizRepetidas() + "," + encuestdor.getEncuestasNulas());
         }
         reporte.close();
     }
